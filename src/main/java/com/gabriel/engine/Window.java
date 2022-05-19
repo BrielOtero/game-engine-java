@@ -8,7 +8,6 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
-import javax.swing.border.Border;
 
 public class Window {
 
@@ -57,5 +56,9 @@ public class Window {
 	public BufferedImage getImage() {
 		return image;
 	}
+
+	// public JFrame getFrame() {
+	// 	return frame;
+	// }
 
 }

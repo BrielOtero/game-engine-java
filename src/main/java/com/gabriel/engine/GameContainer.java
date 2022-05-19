@@ -1,14 +1,18 @@
 package com.gabriel.engine;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+
 //Java Runnable is an interface used to execute code on a concurrent thread.
 public class GameContainer implements Runnable {
 
 	// The Java Virtual Machine allows an application to have multiple threads of
 	// execution running concurrently.
 	private Thread thread;
-
 	private Window window;
 	private Renderer renderer;
+	private Input input;
+	private AbstractGame game;
 
 	// Set if the game is running.
 	private boolean running = false;
@@ -21,9 +25,14 @@ public class GameContainer implements Runnable {
 	private float scale = 3f;
 	private String title = "GabrEngine v0.0.1";
 
+	public GameContainer(AbstractGame game){
+		this.game=game;
+	}
+
 	public void start() {
 		window = new Window(this);
-		renderer=new Renderer(this);
+		renderer = new Renderer(this);
+		input = new Input(this);
 		thread = new Thread(this);
 		thread.run();
 
@@ -72,21 +81,57 @@ public class GameContainer implements Runnable {
 			while (unprocessedTime >= update_cap) {
 				unprocessedTime -= update_cap;
 				render = true;
+
+				game.update(this, (float)update_cap);
+
+				// #region Test
+
 				// System.err.println("Update");
 
-				// TODO: Update game
+				// if(input.isKey(KeyEvent.VK_A)){
+				// System.err.println("A is pressed");
+				// }
+
+				// if(input.isKeyDown(KeyEvent.VK_A)){
+				// System.err.println("A is pressed Down");
+				// }
+
+				// if(input.isKeyUp(KeyEvent.VK_A)){
+				// System.err.println("A is pressed Up");
+				// }
+
+				// if(input.isButton(MouseEvent.BUTTON1)){
+				// System.err.println("Button 1 is pressed");
+				// }
+
+				// if(input.isButtonDown(MouseEvent.BUTTON1)){
+				// System.err.println("Button 1 is pressed Down");
+				// }
+
+				// if(input.isButtonUp(MouseEvent.BUTTON1)){
+				// System.err.println("Button 1 is pressed Up");
+				// }
+
+				// The scroll test alone
+				// System.err.println("The scroll is:"+input.getScroll());
+
+				// System.err.println("X: "+input.getMouseX()+"Y: "+input.getMouseY());
+
+				// #endregion
+
+				input.update();
 
 				if (frameTime >= 1.0) {
 					frameTime = 0;
 					fps = frames;
 					frames = 0;
-					System.err.println("FPS: " + fps);
+					// System.err.println("FPS: " + fps);
 				}
 			}
 
 			if (render) {
 				renderer.clear();
-				// TODO: Render game
+				game.render(this, renderer);
 				window.update();
 				frames++;
 
@@ -106,11 +151,6 @@ public class GameContainer implements Runnable {
 
 	}
 
-	public static void main(String[] args) {
-		GameContainer gc = new GameContainer();
-		gc.start();
-		;
-	}
 
 	// Getters & Setters
 
@@ -149,5 +189,11 @@ public class GameContainer implements Runnable {
 	public Window getWindow() {
 		return window;
 	}
+
+	public Input getInput() {
+		return input;
+	}
+
+	
 
 }
