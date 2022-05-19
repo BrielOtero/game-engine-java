@@ -1,6 +1,7 @@
 package com.gabriel.game;
 
 import java.awt.event.KeyEvent;
+import java.net.URISyntaxException;
 
 import com.gabriel.engine.AbstractGame;
 import com.gabriel.engine.GameContainer;
@@ -13,9 +14,19 @@ public class GameManager extends AbstractGame {
 
 	public GameManager() {
 
+		try {
+			System.err.println(GameManager.class.getResource("/img/test.png").toURI().getPath());
+		} catch (URISyntaxException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
-
-		image= new Image("/test.png");
+		try {
+			image = new Image(GameManager.class.getResource("/img/test.png").toURI().getPath());
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
