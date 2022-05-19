@@ -30,7 +30,7 @@ public class Renderer {
 	}
 
 	// 0xffff00ff is a Pink color that not render. Let's use this color as invisible
-	// color.
+	// color. In RGB is (255,0,255).
 	public void setPixel(int x, int y, int value) {
 
 		if ((x < 0 || x >= pW || y < 0 || y >= pH) || value == 0xffff00ff) {
