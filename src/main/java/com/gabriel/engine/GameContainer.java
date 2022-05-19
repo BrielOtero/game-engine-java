@@ -7,19 +7,29 @@ public class GameContainer implements Runnable {
 	// execution running concurrently.
 	private Thread thread;
 
+	private Window window;
+	private Renderer renderer;
+
 	// Set if the game is running.
 	private boolean running = false;
 
 	// Limit the fps to 60.
 	private final double update_cap = 1.0 / 60.0;
 
-	public GameContainer() {
+	private int width = 320;
+	private int height = 240;
+	private float scale = 3f;
+	private String title = "GabrEngine v0.0.1";
+
+	public void start() {
+		window = new Window(this);
+		renderer=new Renderer(this);
+		thread = new Thread(this);
+		thread.run();
 
 	}
 
-	public void start() {
-		thread = new Thread(this);
-		thread.run();
+	public GameContainer() {
 
 	}
 
@@ -31,26 +41,113 @@ public class GameContainer implements Runnable {
 
 		running = true;
 
+		boolean render = false;
+
 		double firstTime = 0;
 
-
-		/** 
+		/**
 		 * System. The System class contains several useful class fields and methods.
 		 * 
 		 * NanoTime. Returns the current value of the running Java Virtual Machine's
 		 * high-resolution time source, in nanoseconds
 		 */
-		double lastTime = System.nanoTime()/1000000000.0;
+		double lastTime = System.nanoTime() / 1000000000.0;
 		double passedTime = 0;
 		double unprocessedTime = 0;
 
+		double frameTime = 0;
+		int frames = 0;
+		int fps = 0;
+
 		while (running) {
-			firstTime=System.nanoTime()/1000000000.0;
+			render = false;
+
+			firstTime = System.nanoTime() / 1000000000.0;
+			passedTime = firstTime - lastTime;
+			lastTime = firstTime;
+
+			unprocessedTime += passedTime;
+			frameTime += passedTime;
+
+			while (unprocessedTime >= update_cap) {
+				unprocessedTime -= update_cap;
+				render = true;
+				// System.err.println("Update");
+
+				// TODO: Update game
+
+				if (frameTime >= 1.0) {
+					frameTime = 0;
+					fps = frames;
+					frames = 0;
+					System.err.println("FPS: " + fps);
+				}
+			}
+
+			if (render) {
+				renderer.clear();
+				// TODO: Render game
+				window.update();
+				frames++;
+
+			} else {
+
+				try {
+					Thread.sleep(1);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
 		}
+		dispose();
 	}
 
 	private void dispose() {
 
+	}
+
+	public static void main(String[] args) {
+		GameContainer gc = new GameContainer();
+		gc.start();
+		;
+	}
+
+	// Getters & Setters
+
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public float getScale() {
+		return scale;
+	}
+
+	public void setScale(float scale) {
+		this.scale = scale;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public Window getWindow() {
+		return window;
 	}
 
 }
