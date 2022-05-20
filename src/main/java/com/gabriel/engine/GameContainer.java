@@ -18,7 +18,7 @@ public class GameContainer implements Runnable {
 	private boolean running = false;
 
 	// Limit the fps to 60.
-	private final double update_cap = 1.0 / 60.0;
+	private final double update_cap=1.0/60.0;
 
 	private int width = 320;
 	private int height = 240;
