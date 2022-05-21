@@ -33,11 +33,16 @@ public class Renderer {
 		}
 	}
 
+	// ----- OLD 
 	// 0xffff00ff is a Pink color that not render. Let's use this color as invisible
 	// color. In RGB is (255,0,255).
+
+	// ----- NEW
+	// In new version value == 0xffff00ff is change to ((value >> 24) & 0xff) == 0)
+	// that make posible set pixel transparent.
 	public void setPixel(int x, int y, int value) {
 
-		if ((x < 0 || x >= pW || y < 0 || y >= pH) || value == 0xffff00ff) {
+		if ((x < 0 || x >= pW || y < 0 || y >= pH) || ((value >> 24) & 0xff) == 0) {
 
 			return;
 		}
@@ -58,7 +63,8 @@ public class Renderer {
 
 				for (int x = 0; x < font.getWidths()[unicode]; x++) {
 
-					if (font.getFontImage().getP()[(x + font.getOffsets()[unicode])+ y * font.getFontImage().getW()] == 0xffffffff) {
+					if (font.getFontImage().getP()[(x + font.getOffsets()[unicode])
+							+ y * font.getFontImage().getW()] == 0xffffffff) {
 						setPixel(x + offX + offset, y + offY, color);
 					}
 				}
@@ -178,4 +184,68 @@ public class Renderer {
 
 	}
 
+	public void drawRect(int offX, int offY, int width, int height, int color) {
+
+		for (int y = 0; y <= height; y++) {
+			setPixel(offX, y + offY, color);
+			setPixel(offX + width, y + offY, color);
+		}
+
+		for (int x = 0; x <= width; x++) {
+			setPixel(x + offX, offY, color);
+			setPixel(x + offX, offY + height, color);
+		}
+	}
+
+	public void drawFillRect(int offX, int offY, int width, int height, int color) {
+
+		// Don't Render Code.
+		if (offX < -width) {
+			return;
+		}
+
+		if (offY < -height) {
+			return;
+		}
+
+		if (offX >= pW) {
+			return;
+		}
+
+		if (offY >= pH) {
+			return;
+		}
+
+		int newX = 0;
+		int newY = 0;
+		int newWidth = width;
+		int newHeight = height;
+
+		// Clipping Code.
+		if (offX < 0) {
+			newX -= offX;
+			// System.err.println(newX);
+		}
+
+		if (offY < 0) {
+			newY -= offY;
+			// System.err.println(newY);
+		}
+
+		if (newWidth + offX >= pW) {
+			newWidth -= newWidth + offX - pW;
+			// System.err.println(newWidth);
+		}
+
+		if (newHeight + offY >= pH) {
+			newHeight -= newHeight + offY - pH;
+			// System.err.println(newHeight);
+		}
+
+		for (int y = newY; y <= newHeight; y++) {
+			for (int x = newX; x <= newWidth; x++) {
+				setPixel(x + offX, y + offY, color);
+			}
+		}
+	}
 }
