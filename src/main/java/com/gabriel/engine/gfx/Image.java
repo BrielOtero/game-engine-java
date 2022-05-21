@@ -34,6 +34,12 @@ public class Image {
 
 	}
 
+	public Image(int[] p, int w, int h) {
+		this.p = p;
+		this.w = w;
+		this.h = h;
+	}
+
 	// Getters & Setters
 
 	public int getW() {
@@ -67,6 +73,5 @@ public class Image {
 	public void setAlpha(boolean alpha) {
 		this.alpha = alpha;
 	}
-	
 
 }
