@@ -2,6 +2,8 @@ package com.gabriel.engine.gfx;
 
 public class Font {
 
+	public static final Font STANDARD = new Font("/res/fonts/standard.png"); 
+
 	private Image fontImage;
 	private int[] offsets;
 	private int[] Widths;
@@ -10,9 +12,10 @@ public class Font {
 
 		fontImage = new Image(path);
 
-		// 58 Because the font start in Unicode 32 that is space to 90 that is Z
-		offsets = new int[58];
-		Widths = new int[58];
+		// 59 Because the font start in Unicode 32 that is space to 90 that is Z
+		// https://unicode-table.com/en/
+		offsets = new int[59];
+		Widths = new int[59];
 
 		int Unicode = 0;
 
@@ -29,5 +32,29 @@ public class Font {
 			}
 		}
 	}
+
+	public Image getFontImage() {
+		return fontImage;
+	}
+
+	public void setFontImage(Image fontImage) {
+		this.fontImage = fontImage;
+	}
+
+	public int[] getOffsets() {
+		return offsets;
+	}
+
+	public void setOffsets(int[] offsets) {
+		this.offsets = offsets;
+	}
+
+	public int[] getWidths() {
+		return Widths;
+	}
+
+	public void setWidths(int[] widths) {
+		Widths = widths;
+	}
+
 }
-                   

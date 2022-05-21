@@ -25,8 +25,8 @@ public class GameContainer implements Runnable {
 	private float scale = 3f;
 	private String title = "GabrEngine v0.0.1";
 
-	public GameContainer(AbstractGame game){
-		this.game=game;
+	public GameContainer(AbstractGame game) {
+		this.game = game;
 	}
 
 	public void start() {
@@ -82,7 +82,7 @@ public class GameContainer implements Runnable {
 				unprocessedTime -= update_cap;
 				render = true;
 
-				game.update(this, (float)update_cap);
+				game.update(this, (float) update_cap);
 
 				// #region Test
 
@@ -125,13 +125,14 @@ public class GameContainer implements Runnable {
 					frameTime = 0;
 					fps = frames;
 					frames = 0;
-					System.err.println("FPS: " + fps);
+					// System.err.println("FPS: " + fps);
 				}
 			}
 
 			if (render) {
 				renderer.clear();
 				game.render(this, renderer);
+				renderer.drawText("FPS:" + fps, 0, 0, 0xff00ffff);
 				window.update();
 				frames++;
 
@@ -150,7 +151,6 @@ public class GameContainer implements Runnable {
 	private void dispose() {
 
 	}
-
 
 	// Getters & Setters
 
@@ -193,7 +193,5 @@ public class GameContainer implements Runnable {
 	public Input getInput() {
 		return input;
 	}
-
-	
 
 }

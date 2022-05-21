@@ -14,7 +14,7 @@ public class GameManager extends AbstractGame {
 
 	public GameManager() {
 
-		image = new ImageTile("/img/explosion.png", 16, 16);
+		image = new ImageTile("/res/explosion.png", 16, 16);
 
 	}
 
