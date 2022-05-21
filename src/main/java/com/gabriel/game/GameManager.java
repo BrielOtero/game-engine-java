@@ -10,11 +10,11 @@ import com.gabriel.engine.gfx.ImageTile;
 
 public class GameManager extends AbstractGame {
 
-	private Image image;
+	private ImageTile image;
 
 	public GameManager() {
 
-		image = new Image("/img/test.png");
+		image = new ImageTile("/img/explosion.png", 16, 16);
 
 	}
 
@@ -26,12 +26,20 @@ public class GameManager extends AbstractGame {
 			System.err.println("A is pressed");
 		}
 		// #endregion
+
+		temp += dt * 20;
+
+		if (temp > 3) {
+			temp = 0;
+		}
 	}
+
+	float temp = 0;
 
 	@Override
 	public void render(GameContainer gc, Renderer r) {
 
-		r.drawImage(image, gc.getInput().getMouseX() - 32, gc.getInput().getMouseY() - 32);
+		r.drawImageTile(image, gc.getInput().getMouseX() - 16, gc.getInput().getMouseY() - 16, (int) temp, 0);
 	}
 
 	public static void main(String[] args) {
