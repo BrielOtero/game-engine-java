@@ -31,6 +31,7 @@ public class Renderer {
 	// Light Block
 	private int[] lb;
 
+	private int ambientColor = 0xff6b6b6b;
 	private int zDepth = 0;
 
 	private boolean processing = false;
@@ -52,6 +53,8 @@ public class Renderer {
 
 			p[i] = 0;
 			zb[i] = 0;
+			lm[i] = ambientColor;
+			lb[i] = 0;
 
 		}
 	}
@@ -87,6 +90,16 @@ public class Renderer {
 			setzDepth(ir.zDepth);
 			drawImage(ir.image, ir.offX, ir.offY);
 
+		}
+
+		for (int i = 0; i < p.length; i++) {
+
+			float r = ((lm[i] >> 16) & 0xff) / 255f;
+			float g = ((lm[i] >> 8) & 0xff) / 255f;
+			float b = (lm[i] & 0xff) / 255f;
+
+			p[i] = ((int) (((p[i] >> 16) & 0xff) * r) << 16 | (int) (((p[i] >> 8) & 0xff) * g) << 8
+					| (int) ((p[i] & 0xff) * b));
 		}
 
 		imageRequest.clear();

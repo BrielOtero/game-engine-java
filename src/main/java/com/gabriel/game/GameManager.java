@@ -11,17 +11,14 @@ import com.gabriel.engine.gfx.ImageTile;
 
 public class GameManager extends AbstractGame {
 
-	private Image image3;
 	private Image image2;
-	private ImageTile image;
+	private Image image;
 	private SoundClip clip;
 
 	public GameManager() {
 
-		image3 = new Image("/res/img/transparent.png");
-		image3.setAlpha(true);
-		image2 = new Image("/res/img/explosion.png");
-		image = new ImageTile("/res/img/transparent.png", 16, 16);
+		image2 = new Image("/res/img/white.png");
+		image = new Image("/res/img/light.png");
 		image.setAlpha(true);
 		clip = new SoundClip("/res/audio/test.wav");
 
@@ -50,11 +47,17 @@ public class GameManager extends AbstractGame {
 	@Override
 	public void render(GameContainer gc, Renderer r) {
 
-		// r.drawImage(image3, gc.getInput().getMouseX(), gc.getInput().getMouseY());
-		r.drawImage(image2, 10, 10);
-		r.drawImageTile(image, gc.getInput().getMouseX() - 8, gc.getInput().getMouseY() - 8, 1, 1);
-		// r.drawFillRect(gc.getInput().getMouseX()-200, gc.getInput().getMouseY()-200,
-		// 400, 400, 0xffffccff);
+		for (int x = 0; x < image.getW(); x++) {
+
+			for (int y = 0; y < image.getH(); y++) {
+				r.setLightMap(x, y, image.getP()[x + y * image.getW()]);
+			}
+
+		}
+		r.setzDepth(1);
+
+		// r.drawImage(image2, 10, 10);
+		r.drawImage(image2, gc.getInput().getMouseX() - 8, gc.getInput().getMouseY() - 8);
 	}
 
 	public static void main(String[] args) {
