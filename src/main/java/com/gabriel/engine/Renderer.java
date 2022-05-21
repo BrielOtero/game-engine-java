@@ -1,12 +1,17 @@
 package com.gabriel.engine;
 
 import java.awt.image.DataBufferInt;
+import java.util.ArrayList;
 
 import com.gabriel.engine.gfx.Font;
 import com.gabriel.engine.gfx.Image;
+import com.gabriel.engine.gfx.ImageRequest;
 import com.gabriel.engine.gfx.ImageTile;
 
 public class Renderer {
+
+	private Font font = Font.STANDARD;
+	private ArrayList<ImageRequest> imageRequest = new ArrayList<ImageRequest>();
 
 	// Pixel Width & Pixel Height
 	private int pW;
@@ -15,41 +20,91 @@ public class Renderer {
 	// Pixels
 	private int[] p;
 
-	private Font font = Font.STANDARD;
+	// z Buffer
+	private int[] zb;
+
+	private int zDepth = 0;
+
+	private boolean processing = false;
 
 	public Renderer(GameContainer gc) {
 
 		pW = gc.getWidth();
 		pH = gc.getHeight();
 		p = ((DataBufferInt) gc.getWindow().getImage().getRaster().getDataBuffer()).getData();
+		zb = new int[p.length];
 
 	}
 
 	public void clear() {
 
 		for (int i = 0; i < p.length; i++) {
+
 			p[i] = 0;
+			zb[i] = 0;
 
 		}
 	}
 
-	// ----- OLD 
+	public void process() {
+
+		processing = true;
+
+		for (int i = 0; i < imageRequest.size(); i++) {
+
+			ImageRequest ir = imageRequest.get(i);
+			setzDepth(ir.zDepth);
+			drawImage(ir.image, ir.offX, ir.offY);
+
+		}
+
+		imageRequest.clear();
+		processing = false;
+
+	}
+
+	// ----- OLD
 	// 0xffff00ff is a Pink color that not render. Let's use this color as invisible
 	// color. In RGB is (255,0,255).
 
 	// ----- NEW
 	// In new version value == 0xffff00ff is change to ((value >> 24) & 0xff) == 0)
-	// that make posible set pixel transparent.
+	// that make posible render transparent pixel.
 	public void setPixel(int x, int y, int value) {
 
-		if ((x < 0 || x >= pW || y < 0 || y >= pH) || ((value >> 24) & 0xff) == 0) {
+		int alpha = ((value >> 24) & 0xff);
+
+		if ((x < 0 || x >= pW || y < 0 || y >= pH) || alpha == 0) {
 
 			return;
 		}
 
-		p[x + y * pW] = value;
+		if (zb[x + y * pW] > zDepth) {
+
+			return;
+		}
+
+		if (alpha == 255) {
+
+			p[x + y * pW] = value;
+
+		} else {
+			int pixelColor = p[x + y * pW];
+
+			int newRed = ((pixelColor >> 16) & 0xff)
+					- (int) ((((pixelColor >> 16) & 0xff) - ((value >> 16) & 0xff)) * (alpha / 255f));
+
+			int newGreen = ((pixelColor >> 8) & 0xff)
+					- (int) ((((pixelColor >> 8) & 0xff) - ((value >> 8) & 0xff)) * (alpha / 255f));
+
+			int newBlue = (pixelColor & 0xff) - (int) (((pixelColor & 0xff) - (value & 0xff)) * (alpha / 255f));
+
+			p[x + y * pW] = (255 << 24 | newRed << 16 | newGreen << 8 | newBlue);
+		}
+
 	}
 
+	// Draw Text
 	public void drawText(String text, int offX, int offY, int color) {
 
 		text = text.toUpperCase();
@@ -74,7 +129,15 @@ public class Renderer {
 
 	}
 
+	// Draw Image
 	public void drawImage(Image image, int offX, int offY) {
+
+		if (image.isAlpha() && !processing) {
+
+			imageRequest.add(new ImageRequest(image, zDepth, offX, offY));
+			return;
+
+		}
 
 		// Don't Render Code.
 		if (offX < -image.getW()) {
@@ -128,6 +191,7 @@ public class Renderer {
 		}
 	}
 
+	// Draw Image Tile
 	public void drawImageTile(ImageTile image, int offX, int offY, int tileX, int tileY) {
 
 		// Don't Render Code.
@@ -184,6 +248,7 @@ public class Renderer {
 
 	}
 
+	// Draw Rectangle
 	public void drawRect(int offX, int offY, int width, int height, int color) {
 
 		for (int y = 0; y <= height; y++) {
@@ -197,6 +262,7 @@ public class Renderer {
 		}
 	}
 
+	// Draw Fill Rectangle
 	public void drawFillRect(int offX, int offY, int width, int height, int color) {
 
 		// Don't Render Code.
@@ -248,4 +314,15 @@ public class Renderer {
 			}
 		}
 	}
+
+	// Getters & Setters
+
+	public int getzDepth() {
+		return zDepth;
+	}
+
+	public void setzDepth(int zDepth) {
+		this.zDepth = zDepth;
+	}
+
 }

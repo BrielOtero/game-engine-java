@@ -11,13 +11,16 @@ import com.gabriel.engine.gfx.ImageTile;
 
 public class GameManager extends AbstractGame {
 
+	private Image image3;
 	private Image image2;
 	private ImageTile image;
 	private SoundClip clip;
 
 	public GameManager() {
 
-		image2 = new Image("/res/img/explosionTrans.png");
+		image3 = new Image("/res/img/transparent.png");
+		image3.setAlpha(true);
+		image2 = new Image("/res/img/test.png");
 		image = new ImageTile("/res/img/explosion.png", 16, 16);
 		clip = new SoundClip("/res/audio/test.wav");
 		clip.setVolume(-20);
@@ -30,6 +33,7 @@ public class GameManager extends AbstractGame {
 		// #region Test
 		if (gc.getInput().isKeyDown(KeyEvent.VK_A)) {
 			System.err.println("A is pressed");
+			clip.loop();
 			clip.play();
 		}
 		// #endregion
@@ -46,7 +50,8 @@ public class GameManager extends AbstractGame {
 	@Override
 	public void render(GameContainer gc, Renderer r) {
 
-		r.drawImage(image2, gc.getInput().getMouseX(), gc.getInput().getMouseY());
+		r.drawImage(image3, gc.getInput().getMouseX(), gc.getInput().getMouseY());
+		r.drawImage(image2, 10, 10);
 		// r.drawImageTile(image, gc.getInput().getMouseX() - 8,
 		// gc.getInput().getMouseY() - 8, (int) temp, 0);
 		// r.drawFillRect(gc.getInput().getMouseX()-200, gc.getInput().getMouseY()-200,
