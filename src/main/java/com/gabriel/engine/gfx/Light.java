@@ -2,6 +2,10 @@ package com.gabriel.engine.gfx;
 
 public class Light {
 
+
+	public static final int NONE=0;
+	public static final int FULL=1;
+
 	private int radius;
 	private int diameter;
 	private int color;
@@ -33,6 +37,15 @@ public class Light {
 				}
 			}
 		}
+	}
+
+	public int getLightValue(int x, int y) {
+
+		if (x < 0 || x >= diameter || y < 0 || y >= diameter) {
+			return 0;
+		}
+
+		return lm[x + y * diameter];
 	}
 
 	// Getters & Setters

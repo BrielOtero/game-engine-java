@@ -1,4 +1,4 @@
-package com.gabriel.fontcreator;
+package res.fontcreator;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -61,7 +61,7 @@ public class FontCreator extends JFrame {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception ex) {
 		}
-		;
+		
 
 		setResizable(false);
 		setTitle("Font Creator for j2game");

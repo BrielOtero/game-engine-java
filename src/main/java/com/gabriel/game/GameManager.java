@@ -19,11 +19,13 @@ public class GameManager extends AbstractGame {
 
 	public GameManager() {
 
-		image2 = new Image("/res/img/light3.png");
-		image = new Image("/res/img/light2.png");
+		image = new Image("/res/img/test.png");
+		image.setLightBlock(Light.FULL);
 		image.setAlpha(true);
+		image2 = new Image("/res/img/light3.png");
+		image2.setAlpha(true);
 		clip = new SoundClip("/res/audio/test.wav");
-		light=new Light(50, 0xff00ffff);
+		light=new Light(200, 0xff00ffff);
 
 	}
 
@@ -50,19 +52,12 @@ public class GameManager extends AbstractGame {
 	@Override
 	public void render(GameContainer gc, Renderer r) {
 
-		for (int x = 0; x < light.getDiameter(); x++) {
-
-			for (int y = 0; y < light.getDiameter(); y++) {
-
-				r.setLightMap(x, y, light.getLm()[x + y * light.getDiameter()]);
-			}
-
-		}
-
+		
 		r.setzDepth(1);
-
-		// r.drawImage(image2, 10, 10);
+		
 		r.drawImage(image2, 0,0);
+		r.drawImage(image, 100, 100);
+		r.drawLight(light, gc.getInput().getMouseX(), gc.getInput().getMouseY());
 	}
 
 	public static void main(String[] args) {

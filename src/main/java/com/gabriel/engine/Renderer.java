@@ -10,11 +10,13 @@ import com.gabriel.engine.gfx.Image;
 import com.gabriel.engine.gfx.ImageRequest;
 import com.gabriel.engine.gfx.ImageTile;
 import com.gabriel.engine.gfx.Light;
+import com.gabriel.engine.gfx.LightRequest;
 
 public class Renderer {
 
 	private Font font = Font.STANDARD;
 	private ArrayList<ImageRequest> imageRequest = new ArrayList<ImageRequest>();
+	private ArrayList<LightRequest> lightRequest = new ArrayList<LightRequest>();
 
 	// Pixel Width & Pixel Height
 	private int pW;
@@ -93,6 +95,14 @@ public class Renderer {
 
 		}
 
+		// Draw lighting
+
+		for (int i = 0; i < lightRequest.size(); i++) {
+
+			LightRequest l = lightRequest.get(i);
+			drawLightRequest(l.light, l.locX, l.locY);
+		}
+
 		for (int i = 0; i < p.length; i++) {
 
 			float r = ((lm[i] >> 16) & 0xff) / 255f;
@@ -105,6 +115,7 @@ public class Renderer {
 		}
 
 		imageRequest.clear();
+		lightRequest.clear();
 		processing = false;
 
 	}
@@ -169,6 +180,22 @@ public class Renderer {
 		int maxBlue = Math.max(baseColor & 0xff, value & 0xff);
 
 		lm[x + y * pW] = (maxRed << 16 | maxGreen << 8 | maxBlue);
+
+	}
+
+	public void setLightBlock(int x, int y, int value) {
+
+		if ((x < 0 || x >= pW || y < 0 || y >= pH)) {
+
+			return;
+		}
+
+		if (zb[x + y * pW] > zDepth) {
+
+			return;
+		}
+
+		lb[x + y * pW] = value;
 
 	}
 
@@ -254,6 +281,7 @@ public class Renderer {
 			for (int x = newX; x < newWidth; x++) {
 
 				setPixel(x + offX, y + offY, image.getP()[x + y * image.getW()]);
+				setLightBlock(x + offX, y + offY, image.getLightBlock());
 			}
 		}
 	}
@@ -317,6 +345,8 @@ public class Renderer {
 
 				setPixel(x + offX, y + offY, image.getP()[(x + tileX * image.getTileW())
 						+ (y + tileY * image.getTileH()) * image.getW()]);
+				setLightBlock(x + offX, y + offY, image.getLightBlock());
+
 			}
 		}
 
@@ -385,11 +415,25 @@ public class Renderer {
 		for (int y = newY; y < newHeight; y++) {
 			for (int x = newX; x < newWidth; x++) {
 				setPixel(x + offX, y + offY, color);
+
 			}
 		}
 	}
+	public void drawLight(Light l, int offX, int offY){
+		
+		lightRequest.add(new LightRequest(l, offX, offY));
 
-	public void drawLight(Light l, int offX, int offY) {
+	}
+
+	private void drawLightRequest(Light l, int offX, int offY) {
+
+		for (int i = 0; i <= l.getDiameter(); i++) {
+
+			drawLightLine(l, l.getRadius(), l.getRadius(), i, 0, offX, offY);
+			drawLightLine(l, l.getRadius(), l.getRadius(), i, l.getDiameter(), offX, offY);
+			drawLightLine(l, l.getRadius(), l.getRadius(), 0, i, offX, offY);
+			drawLightLine(l, l.getRadius(), l.getRadius(), l.getDiameter(), i, offX, offY);
+		}
 
 	}
 
@@ -406,7 +450,24 @@ public class Renderer {
 
 		while (true) {
 
-			setLightMap(x0, y0, l.getLm()[x0 + y0 * l.getDiameter()]);
+			int screenX = x0 - l.getRadius() + offX;
+			int screenY = y0 - l.getRadius() + offY;
+
+			if (screenX < 0 || screenX >= pW || screenY < 0 || screenY >= pH) {
+				return;
+			}
+
+			int lightColor = l.getLightValue(x0, y0);
+
+			if (lightColor == 0) {
+				return;
+			}
+
+			if (lb[screenX + screenY * pW] == Light.FULL) {
+				return;
+			}
+
+			setLightMap(screenX, screenY, lightColor);
 
 			if (x0 == x1 && y0 == y1) {
 				break;
