@@ -26,6 +26,8 @@ public class ImageTile extends Image {
 		return new Image(p, tileW, tileH);
 	}
 
+	// Getters & Setters
+
 	public int getTileW() {
 		return tileW;
 	}

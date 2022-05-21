@@ -38,6 +38,8 @@ public class Font {
 		}
 	}
 
+	// Getters & Setters
+
 	public Image getFontImage() {
 		return fontImage;
 	}

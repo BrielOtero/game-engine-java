@@ -8,19 +8,22 @@ import com.gabriel.engine.Renderer;
 import com.gabriel.engine.audio.SoundClip;
 import com.gabriel.engine.gfx.Image;
 import com.gabriel.engine.gfx.ImageTile;
+import com.gabriel.engine.gfx.Light;
 
 public class GameManager extends AbstractGame {
 
 	private Image image2;
 	private Image image;
 	private SoundClip clip;
+	private Light light;
 
 	public GameManager() {
 
-		image2 = new Image("/res/img/white.png");
-		image = new Image("/res/img/light.png");
+		image2 = new Image("/res/img/light3.png");
+		image = new Image("/res/img/light2.png");
 		image.setAlpha(true);
 		clip = new SoundClip("/res/audio/test.wav");
+		light=new Light(50, 0xff00ffff);
 
 	}
 
@@ -47,17 +50,19 @@ public class GameManager extends AbstractGame {
 	@Override
 	public void render(GameContainer gc, Renderer r) {
 
-		for (int x = 0; x < image.getW(); x++) {
+		for (int x = 0; x < light.getDiameter(); x++) {
 
-			for (int y = 0; y < image.getH(); y++) {
-				r.setLightMap(x, y, image.getP()[x + y * image.getW()]);
+			for (int y = 0; y < light.getDiameter(); y++) {
+
+				r.setLightMap(x, y, light.getLm()[x + y * light.getDiameter()]);
 			}
 
 		}
+
 		r.setzDepth(1);
 
 		// r.drawImage(image2, 10, 10);
-		r.drawImage(image2, gc.getInput().getMouseX() - 8, gc.getInput().getMouseY() - 8);
+		r.drawImage(image2, 0,0);
 	}
 
 	public static void main(String[] args) {

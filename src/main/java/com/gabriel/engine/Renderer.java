@@ -9,6 +9,7 @@ import com.gabriel.engine.gfx.Font;
 import com.gabriel.engine.gfx.Image;
 import com.gabriel.engine.gfx.ImageRequest;
 import com.gabriel.engine.gfx.ImageTile;
+import com.gabriel.engine.gfx.Light;
 
 public class Renderer {
 
@@ -98,7 +99,8 @@ public class Renderer {
 			float g = ((lm[i] >> 8) & 0xff) / 255f;
 			float b = (lm[i] & 0xff) / 255f;
 
-			p[i] = ((int) (((p[i] >> 16) & 0xff) * r) << 16 | (int) (((p[i] >> 8) & 0xff) * g) << 8
+			p[i] = ((int) (((p[i] >> 16) & 0xff) * r) << 16
+					| (int) (((p[i] >> 8) & 0xff) * g) << 8
 					| (int) ((p[i] & 0xff) * b));
 		}
 
@@ -383,6 +385,46 @@ public class Renderer {
 		for (int y = newY; y < newHeight; y++) {
 			for (int x = newX; x < newWidth; x++) {
 				setPixel(x + offX, y + offY, color);
+			}
+		}
+	}
+
+	public void drawLight(Light l, int offX, int offY) {
+
+	}
+
+	private void drawLightLine(Light l, int x0, int y0, int x1, int y1, int offX, int offY) {
+
+		int dx = Math.abs(x1 - x0);
+		int dy = Math.abs(y1 - y0);
+
+		int sx = x0 < x1 ? 1 : -1;
+		int sy = y0 < y1 ? 1 : -1;
+
+		int err = dx - dy;
+		int e2;
+
+		while (true) {
+
+			setLightMap(x0, y0, l.getLm()[x0 + y0 * l.getDiameter()]);
+
+			if (x0 == x1 && y0 == y1) {
+				break;
+			}
+
+			e2 = 2 * err;
+
+			if (e2 > -1 * dy) {
+
+				err -= dy;
+				x0 += sx;
+
+			}
+
+			if (e2 < dx) {
+
+				err += dx;
+				y0 += sy;
 			}
 		}
 	}
