@@ -6,13 +6,15 @@ import com.gabriel.engine.Renderer;
 public abstract class GameObject {
 
 	protected String tag;
+
 	protected float posX;
 	protected float posY;
+	
 	protected int width;
 	protected int height;
 	protected boolean dead = false;
 
-	public abstract void update(GameContainer gc, float dt);
+	public abstract void update(GameContainer gc, GameManager gm,float dt);
 
 	public abstract void render(GameContainer gc, Renderer r);
 

@@ -14,7 +14,9 @@ import com.gabriel.engine.gfx.Light;
 
 public class GameManager extends AbstractGame {
 
-	private int[] collision;
+	public static final int TS = 16;
+
+	private boolean[] collision;
 	private int levelW;
 	private int levelH;
 	private ArrayList<GameObject> objects = new ArrayList<GameObject>();
@@ -22,7 +24,7 @@ public class GameManager extends AbstractGame {
 	private SoundClip backSong = new SoundClip("/res/audio/test.wav");
 
 	public GameManager() {
-		objects.add(new Player(2, 2));
+		objects.add(new Player(3, 4));
 		loadLevel("/res/img/level.png");
 	}
 
@@ -31,8 +33,8 @@ public class GameManager extends AbstractGame {
 
 		gc.getRenderer().setAmbientColor(-1);
 
-		// backSong.play();
 		// backSong.setVolume(-10);
+		// backSong.play();
 	}
 
 	@Override
@@ -40,7 +42,7 @@ public class GameManager extends AbstractGame {
 
 		for (int i = 0; i < objects.size(); i++) {
 
-			objects.get(i).update(gc, dt);
+			objects.get(i).update(gc, this, dt);
 
 			if (objects.get(i).isDead()) {
 
@@ -58,12 +60,12 @@ public class GameManager extends AbstractGame {
 
 			for (int x = 0; x < levelW; x++) {
 
-				if (collision[x + y * levelW] == 1) {
+				if (collision[x + y * levelW]) {
 
-					r.drawFillRect(x * 16, y * 16, 16, 16, 0xff0f0f0f);
+					r.drawFillRect(x * TS, y * TS, TS, TS, 0xff0f0f0f);
 
 				} else {
-					r.drawFillRect(x * 16, y * 16, 16, 16, 0xfff9f9f9);
+					r.drawFillRect(x * TS, y * TS, TS, TS, 0xfff9f9f9);
 
 				}
 			}
@@ -81,7 +83,7 @@ public class GameManager extends AbstractGame {
 
 		levelW = levelImage.getW();
 		levelH = levelImage.getH();
-		collision = new int[levelW * levelH];
+		collision = new boolean[levelW * levelH];
 
 		for (int y = 0; y < levelImage.getH(); y++) {
 
@@ -89,15 +91,29 @@ public class GameManager extends AbstractGame {
 
 				if (levelImage.getP()[x + y * levelImage.getW()] == 0xff000000) {
 
-					collision[x + y * levelImage.getW()] = 1;
+					collision[x + y * levelImage.getW()] = true;
 
 				} else {
 
-					collision[x + y * levelImage.getW()] = 0;
+					collision[x + y * levelImage.getW()] = false;
 				}
 			}
 
 		}
+	}
+
+	public void addObject(GameObject object) {
+		objects.add(object);
+	}
+
+	public boolean getCollision(int x, int y) {
+
+		if (x < 0 || x >= levelW || y < 0 || y >= levelH) {
+
+			return true;
+		}
+
+		return collision[x + y * levelW];
 	}
 
 	public static void main(String[] args) {
