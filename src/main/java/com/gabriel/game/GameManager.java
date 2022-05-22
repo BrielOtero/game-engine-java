@@ -1,6 +1,8 @@
 package com.gabriel.game;
 
+import java.awt.Button;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 import com.gabriel.engine.AbstractGame;
 import com.gabriel.engine.GameContainer;
@@ -12,52 +14,90 @@ import com.gabriel.engine.gfx.Light;
 
 public class GameManager extends AbstractGame {
 
-	private Image image2;
-	private Image image;
-	private SoundClip clip;
-	private Light light;
+	private int[] collision;
+	private int levelW;
+	private int levelH;
+	private ArrayList<GameObject> objects = new ArrayList<GameObject>();
+
+	private SoundClip backSong = new SoundClip("/res/audio/test.wav");
 
 	public GameManager() {
+		objects.add(new Player(2, 2));
+		loadLevel("/res/img/level.png");
+	}
 
-		image = new Image("/res/img/test.png");
-		image.setLightBlock(Light.FULL);
-		image.setAlpha(true);
-		image2 = new Image("/res/img/light3.png");
-		image2.setAlpha(true);
-		clip = new SoundClip("/res/audio/test.wav");
-		light=new Light(200, 0xff00ffff);
+	@Override
+	public void init(GameContainer gc) {
 
+		gc.getRenderer().setAmbientColor(-1);
+
+		// backSong.play();
+		// backSong.setVolume(-10);
 	}
 
 	@Override
 	public void update(GameContainer gc, float dt) {
 
-		// #region Test
-		if (gc.getInput().isKeyDown(KeyEvent.VK_A)) {
-			System.err.println("A is pressed");
-			clip.loop();
-			clip.play();
-		}
-		// #endregion
+		for (int i = 0; i < objects.size(); i++) {
 
-		temp += dt * 20;
+			objects.get(i).update(gc, dt);
 
-		if (temp > 3) {
-			temp = 0;
+			if (objects.get(i).isDead()) {
+
+				objects.remove(i);
+				i--;
+			}
 		}
+
 	}
-
-	float temp = 0;
 
 	@Override
 	public void render(GameContainer gc, Renderer r) {
 
-		
-		r.setzDepth(1);
-		
-		r.drawImage(image2, 0,0);
-		r.drawImage(image, 100, 100);
-		r.drawLight(light, gc.getInput().getMouseX(), gc.getInput().getMouseY());
+		for (int y = 0; y < levelH; y++) {
+
+			for (int x = 0; x < levelW; x++) {
+
+				if (collision[x + y * levelW] == 1) {
+
+					r.drawFillRect(x * 16, y * 16, 16, 16, 0xff0f0f0f);
+
+				} else {
+					r.drawFillRect(x * 16, y * 16, 16, 16, 0xfff9f9f9);
+
+				}
+			}
+		}
+
+		for (GameObject obj : objects) {
+			obj.render(gc, r);
+		}
+
+	}
+
+	public void loadLevel(String path) {
+
+		Image levelImage = new Image(path);
+
+		levelW = levelImage.getW();
+		levelH = levelImage.getH();
+		collision = new int[levelW * levelH];
+
+		for (int y = 0; y < levelImage.getH(); y++) {
+
+			for (int x = 0; x < levelImage.getW(); x++) {
+
+				if (levelImage.getP()[x + y * levelImage.getW()] == 0xff000000) {
+
+					collision[x + y * levelImage.getW()] = 1;
+
+				} else {
+
+					collision[x + y * levelImage.getW()] = 0;
+				}
+			}
+
+		}
 	}
 
 	public static void main(String[] args) {

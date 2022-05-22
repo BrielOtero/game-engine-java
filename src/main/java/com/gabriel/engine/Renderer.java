@@ -500,4 +500,14 @@ public class Renderer {
 		this.zDepth = zDepth;
 	}
 
+	public int getAmbientColor() {
+		return ambientColor;
+	}
+
+	public void setAmbientColor(int ambientColor) {
+		this.ambientColor = ambientColor;
+	}
+
+	
+
 }

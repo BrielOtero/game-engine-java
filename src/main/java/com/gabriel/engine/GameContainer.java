@@ -18,7 +18,7 @@ public class GameContainer implements Runnable {
 	private boolean running = false;
 
 	// Limit the fps to 60.
-	private final double update_cap=1.0/60.0;
+	private final double update_cap = 1.0 / 60.0;
 
 	private int width = 320;
 	private int height = 240;
@@ -67,6 +67,8 @@ public class GameContainer implements Runnable {
 		double frameTime = 0;
 		int frames = 0;
 		int fps = 0;
+
+		game.init(this);
 
 		while (running) {
 
@@ -195,6 +197,10 @@ public class GameContainer implements Runnable {
 
 	public Input getInput() {
 		return input;
+	}
+
+	public Renderer getRenderer() {
+		return renderer;
 	}
 
 }
