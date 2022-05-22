@@ -39,6 +39,9 @@ public class Renderer {
 
 	private boolean processing = false;
 
+	private int camX;
+	private int camY;
+
 	public Renderer(GameContainer gc) {
 
 		pW = gc.getWidth();
@@ -168,6 +171,7 @@ public class Renderer {
 
 	public void setLightMap(int x, int y, int value) {
 
+
 		if ((x < 0 || x >= pW || y < 0 || y >= pH)) {
 
 			return;
@@ -185,6 +189,7 @@ public class Renderer {
 
 	public void setLightBlock(int x, int y, int value) {
 
+
 		if ((x < 0 || x >= pW || y < 0 || y >= pH)) {
 
 			return;
@@ -201,6 +206,10 @@ public class Renderer {
 
 	// Draw Text
 	public void drawText(String text, int offX, int offY, int color) {
+
+		offX -= camX;
+		offY -= camY;
+
 
 		int offset = 0;
 
@@ -225,6 +234,10 @@ public class Renderer {
 
 	// Draw Image
 	public void drawImage(Image image, int offX, int offY) {
+
+		offX -= camX;
+		offY -= camY;
+
 
 		if (image.isAlpha() && !processing) {
 
@@ -256,6 +269,7 @@ public class Renderer {
 		int newHeight = image.getH();
 
 		// Clipping Code.
+		
 		if (offX < 0) {
 			newX -= offX;
 			// System.err.println(newX);
@@ -288,6 +302,10 @@ public class Renderer {
 
 	// Draw Image Tile
 	public void drawImageTile(ImageTile image, int offX, int offY, int tileX, int tileY) {
+
+		offX -= camX;
+		offY -= camY;
+
 
 		if (image.isAlpha() && !processing) {
 
@@ -355,6 +373,10 @@ public class Renderer {
 	// Draw Rectangle
 	public void drawRect(int offX, int offY, int width, int height, int color) {
 
+		offX -= camX;
+		offY -= camY;
+
+
 		for (int y = 0; y <= height; y++) {
 			setPixel(offX, y + offY, color);
 			setPixel(offX + width, y + offY, color);
@@ -368,6 +390,9 @@ public class Renderer {
 
 	// Draw Fill Rectangle
 	public void drawFillRect(int offX, int offY, int width, int height, int color) {
+
+		offX -= camX;
+		offY -= camY;
 
 		// Don't Render Code.
 		if (offX < -width) {
@@ -386,46 +411,25 @@ public class Renderer {
 			return;
 		}
 
-		int newX = 0;
-		int newY = 0;
-		int newWidth = width;
-		int newHeight = height;
-
-		// Clipping Code.
-		if (offX < 0) {
-			newX -= offX;
-			// System.err.println(newX);
-		}
-
-		if (offY < 0) {
-			newY -= offY;
-			// System.err.println(newY);
-		}
-
-		if (newWidth + offX >= pW) {
-			newWidth -= newWidth + offX - pW;
-			// System.err.println(newWidth);
-		}
-
-		if (newHeight + offY >= pH) {
-			newHeight -= newHeight + offY - pH;
-			// System.err.println(newHeight);
-		}
-
-		for (int y = newY; y < newHeight; y++) {
-			for (int x = newX; x < newWidth; x++) {
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
 				setPixel(x + offX, y + offY, color);
 
 			}
 		}
 	}
-	public void drawLight(Light l, int offX, int offY){
-		
+
+	public void drawLight(Light l, int offX, int offY) {
+
 		lightRequest.add(new LightRequest(l, offX, offY));
 
 	}
 
 	private void drawLightRequest(Light l, int offX, int offY) {
+
+		offX -= camX;
+		offY -= camY;
+
 
 		for (int i = 0; i <= l.getDiameter(); i++) {
 
@@ -508,6 +512,20 @@ public class Renderer {
 		this.ambientColor = ambientColor;
 	}
 
-	
+	public int getCamX() {
+		return camX;
+	}
+
+	public void setCamX(int camX) {
+		this.camX = camX;
+	}
+
+	public int getCamY() {
+		return camY;
+	}
+
+	public void setCamY(int camY) {
+		this.camY = camY;
+	}
 
 }

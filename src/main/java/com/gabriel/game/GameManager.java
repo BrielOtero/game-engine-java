@@ -16,16 +16,24 @@ public class GameManager extends AbstractGame {
 
 	public static final int TS = 16;
 
+	private Image levelImage = new Image("/res/img/lev.png");
+	private Image skyImage = new Image("/res/img/sky.png");
+
+	private ArrayList<GameObject> objects = new ArrayList<GameObject>();
+	private Camera camera;
+
 	private boolean[] collision;
 	private int levelW;
 	private int levelH;
-	private ArrayList<GameObject> objects = new ArrayList<GameObject>();
 
-	private SoundClip backSong = new SoundClip("/res/audio/test.wav");
+	//private SoundClip backSong = new SoundClip("/res/audio/test.wav");
 
 	public GameManager() {
-		objects.add(new Player(3, 4));
-		loadLevel("/res/img/level.png");
+		objects.add(new Player(6, 4));
+		loadLevel("/res/img/levelMap.png");
+		camera = new Camera("player");
+		// levelImag.setAlpha(true);
+		levelImage.setLightBlock((int)Light.FULL);
 	}
 
 	@Override
@@ -51,25 +59,32 @@ public class GameManager extends AbstractGame {
 			}
 		}
 
+		camera.update(gc, this, dt);
+
 	}
 
 	@Override
 	public void render(GameContainer gc, Renderer r) {
+		
+		camera.render(r);
+		// System.err.println(levelImage..get);
+		r.drawImage(skyImage, 0, 0);
+		r.drawImage(levelImage, 0, 0);
 
-		for (int y = 0; y < levelH; y++) {
+		// for (int y = 0; y < levelH; y++) {
 
-			for (int x = 0; x < levelW; x++) {
+		// 	for (int x = 0; x < levelW; x++) {
 
-				if (collision[x + y * levelW]) {
+		// 		if (collision[x + y * levelW]) {
 
-					r.drawFillRect(x * TS, y * TS, TS, TS, 0xff0f0f0f);
+		// 			r.drawFillRect(x * TS, y * TS, TS, TS, 0xff0f0f0f);
 
-				} else {
-					r.drawFillRect(x * TS, y * TS, TS, TS, 0xfff9f9f9);
+		// 		} else {
+		// 			r.drawFillRect(x * TS, y * TS, TS, TS, 0xfff9f9f9);
 
-				}
-			}
-		}
+		// 		}
+		// 	}
+		// }
 
 		for (GameObject obj : objects) {
 			obj.render(gc, r);
@@ -104,6 +119,19 @@ public class GameManager extends AbstractGame {
 
 	public void addObject(GameObject object) {
 		objects.add(object);
+	}
+
+	public GameObject getObject(String tag) {
+
+		for (int i = 0; i < objects.size(); i++) {
+
+			if (objects.get(i).getTag().equals(tag)) {
+
+				return objects.get(i);
+			}
+		}
+
+		return null;
 	}
 
 	public boolean getCollision(int x, int y) {

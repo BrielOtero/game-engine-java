@@ -4,6 +4,7 @@ public class Light {
 
 
 	public static final int NONE=0;
+	// public static final double PARTIAL=0.5;
 	public static final int FULL=1;
 
 	private int radius;
