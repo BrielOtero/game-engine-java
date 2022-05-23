@@ -18,6 +18,7 @@ public class GameManager extends AbstractGame {
 
 	private Image levelImage = new Image("/res/img/lev.png");
 	private Image skyImage = new Image("/res/img/sky.png");
+	//private Light light = new 
 
 	private ArrayList<GameObject> objects = new ArrayList<GameObject>();
 	private Camera camera;
@@ -34,6 +35,7 @@ public class GameManager extends AbstractGame {
 		camera = new Camera("player");
 		// levelImag.setAlpha(true);
 		levelImage.setLightBlock((int)Light.FULL);
+		skyImage.setLightBlock((int)Light.FULL);
 	}
 
 	@Override
@@ -41,7 +43,7 @@ public class GameManager extends AbstractGame {
 
 		gc.getRenderer().setAmbientColor(-1);
 
-		backSong.setVolume(-10);
+		// backSong.setVolume(-10);
 		backSong.play();
 	}
 
