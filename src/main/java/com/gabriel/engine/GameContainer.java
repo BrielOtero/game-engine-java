@@ -24,6 +24,7 @@ public class GameContainer implements Runnable {
 	private int height = 240;
 	private float scale = 3f;
 	private String title = "GabrEngine v0.0.1";
+	private int fps;
 
 	public GameContainer(AbstractGame game) {
 		this.game = game;
@@ -66,7 +67,7 @@ public class GameContainer implements Runnable {
 
 		double frameTime = 0;
 		int frames = 0;
-		int fps = 0;
+		fps = 0;
 
 		game.init(this);
 
@@ -204,5 +205,9 @@ public class GameContainer implements Runnable {
 	public Renderer getRenderer() {
 		return renderer;
 	}
+
+	public int getFps() {
+		return fps;
+	}	
 
 }
