@@ -2,7 +2,7 @@ package com.gabriel.engine.gfx;
 
 public class Font {
 
-	public static final Font STANDARD = new Font("/res/fonts/comic.png"); 
+	public static final Font STANDARD = new Font("/res/fonts/fira.png"); 
 
 	private Image fontImage;
 	private int[] offsets;

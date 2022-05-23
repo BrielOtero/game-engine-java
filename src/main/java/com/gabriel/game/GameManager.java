@@ -26,7 +26,7 @@ public class GameManager extends AbstractGame {
 	private int levelW;
 	private int levelH;
 
-	//private SoundClip backSong = new SoundClip("/res/audio/test.wav");
+	private SoundClip backSong = new SoundClip("/res/audio/test.wav");
 
 	public GameManager() {
 		objects.add(new Player(6, 4));
@@ -41,8 +41,8 @@ public class GameManager extends AbstractGame {
 
 		gc.getRenderer().setAmbientColor(-1);
 
-		// backSong.setVolume(-10);
-		// backSong.play();
+		backSong.setVolume(-10);
+		backSong.play();
 	}
 
 	@Override

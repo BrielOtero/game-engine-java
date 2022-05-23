@@ -165,16 +165,16 @@ public class Player extends GameObject {
 		posY = tileY * GameManager.TS + offY;
 
 		// Shooting
-		if (gc.getInput().isKeyDown(KeyEvent.VK_UP)) {
+		if (gc.getInput().isKey(KeyEvent.VK_UP)) {
 			gm.addObject(new Bullet(tileX, tileY, offX + width / 2, offY + height / 2, 0));
 		}
-		if (gc.getInput().isKeyDown(KeyEvent.VK_RIGHT)) {
+		if (gc.getInput().isKey(KeyEvent.VK_RIGHT)) {
 			gm.addObject(new Bullet(tileX, tileY, offX + width / 2, offY + height / 2, 1));
 		}
-		if (gc.getInput().isKeyDown(KeyEvent.VK_DOWN)) {
+		if (gc.getInput().isKey(KeyEvent.VK_DOWN)) {
 			gm.addObject(new Bullet(tileX, tileY, offX + width / 2, offY + height / 2, 2));
 		}
-		if (gc.getInput().isKeyDown(KeyEvent.VK_LEFT)) {
+		if (gc.getInput().isKey(KeyEvent.VK_LEFT)) {
 			gm.addObject(new Bullet(tileX, tileY, offX + width / 2, offY + height / 2, 3));
 		}
 
