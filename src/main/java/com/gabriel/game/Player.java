@@ -4,6 +4,7 @@ import java.awt.event.KeyEvent;
 
 import com.gabriel.engine.GameContainer;
 import com.gabriel.engine.Renderer;
+import com.gabriel.engine.gfx.*;
 
 public class Player extends GameObject {
 
@@ -20,6 +21,7 @@ public class Player extends GameObject {
 	private boolean ground = false;
 
 	private float fallDistance = 0;
+	private Light light;
 
 	public Player(int posX, int posY) {
 
@@ -182,7 +184,9 @@ public class Player extends GameObject {
 
 	@Override
 	public void render(GameContainer gc, Renderer r) {
-		r.drawFillRect((int) posX, (int) posY, width, height, 0xff00ff00);
+		r.drawFillRect((int) posX, (int) posY, width, height, 0xfffaff00);
+		light = new Light(100, 0xffffff00);
+		r.drawLight(light, (int) posX + 8, (int) posY + 8);
 	}
 
 }

@@ -31,8 +31,8 @@ public class GameManager extends AbstractGame {
 	private SoundClip backSong = new SoundClip("/res/audio/test.wav");
 
 	public GameManager() {
-		objects.add(new Player(8, 4));
-		loadLevel("/res/img/levelMapFull.png");
+		objects.add(new Player(3, 4));
+		loadLevel("/res/img/levelMap.png");
 		camera = new Camera("player");
 		image.setAlpha(true);
 		light = new Light(200, 0xffffc72a);
@@ -71,37 +71,40 @@ public class GameManager extends AbstractGame {
 
 	@Override
 	public void render(GameContainer gc, Renderer r) {
-
-		r.setzDepth(1);
 		// r.drawText(String.format("%s", gc.getFps()), 0, 0, 0xff00ffff);
-		r.drawLight(light, (int) objects.get(0).posX + 8, (int) objects.get(0).posY + 8);
-		r.setzDepth(0);
+		
+		// r.setzDepth(0);
 		camera.render(r);
 		// r.drawImage(image, gc.getInput().getMouseX()-50,
 		// gc.getInput().getMouseY()-20);
 		r.drawImage(skyImage, 0, 0);
 		r.drawImage(levelImage, 0, 0);
 
-		for (int y = 0; y < levelH; y++) {
+		// for (int y = 0; y < levelH; y++) {
 
-			for (int x = 0; x < levelW; x++) {
+		// 	for (int x = 0; x < levelW; x++) {
 
-				if (collision[x + y * levelW]) {
+		// 		if (collision[x + y * levelW]) {
 
-					r.drawFillRect(x * TS, y * TS, TS, TS, 0xff0f0f0f);
+		// 			r.drawFillRect(x * TS, y * TS, TS, TS, 0xff0f0f0f);
 
-				} else {
-					r.drawFillRect(x * TS, y * TS, TS, TS, 0xfff9f9f9);
+		// 		} else {
+		// 			r.drawFillRect(x * TS, y * TS, TS, TS, 0xfff9f9f9);
 
-				}
-			}
+		// 		}
+		// 	}
+		// }
+		
+		//if ((int) objects.get(0).posX > 200) {
+			if (gc.getInput().isKey(KeyEvent.VK_B)) {
+	
+			gc.getRenderer().setAmbientColor(0xff6b6b6b);
 		}
-
 		if (gc.getInput().isKey(KeyEvent.VK_N)) {
 			gc.getRenderer().setAmbientColor(0xff000000);
 		}
-		//if ((int) objects.get(0).posX > 200) {
-			if (gc.getInput().isKey(KeyEvent.VK_B)) {
+
+		if (gc.getInput().isKey(KeyEvent.VK_M)) {
 			gc.getRenderer().setAmbientColor(0xffffffff);
 		}
 

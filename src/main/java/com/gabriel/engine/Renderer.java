@@ -34,7 +34,7 @@ public class Renderer {
 	// Light Block
 	private int[] lb;
 
-	private int ambientColor = 0xff6b6b6b;
+	private int ambientColor = 0xffffffff;
 	private int zDepth = 0;
 
 	private boolean processing = false;
