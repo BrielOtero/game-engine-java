@@ -32,8 +32,28 @@ public class Camera {
 		float targetY = (target.getPosY() + target.getHeight() / 2) - gc.getHeight() / 2;
 
 		// Smooth Camera
-		offX -= dt * (offX - targetX) * 1;
-		offY -= dt * (offY - targetY) * 1;
+		// offX -= dt * (offX - targetX) * 1;
+		// offY -= dt * (offY - targetY) * 1;
+
+		offX = targetX;
+		offY = targetY-155;
+
+		if (offX < 0){
+			offX = 0;
+		}
+
+		if (offY < 0){
+			offY = 0;
+		}
+		if (offX + gc.getWidth() > gm.getLevelW() * GameManager.TS){
+			offX = gm.getLevelW() * GameManager.TS - gc.getWidth();
+		}
+
+		if (offY + gc.getHeight() > gm.getLevelH() * GameManager.TS){
+			offY = gm.getLevelH() * GameManager.TS - gc.getHeight();
+		}
+
+	
 
 	}
 

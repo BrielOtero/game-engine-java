@@ -8,16 +8,20 @@ import com.gabriel.engine.gfx.*;
 
 public class Player extends GameObject {
 
+	private ImageTile playerImage = new ImageTile("/res/img/player.png", 32, 32);
+	private int direction = 0;
+	private float anim = 1;
+
 	private int tileX;
 	private int tileY;
 
 	private float offX;
 	private float offY;
 
-	private float speed = 100;
+	private float speed = 150;
 
 	private float fallSpeed = 10;
-	private float jump = -4;
+	private float jump = -6;
 	private boolean ground = false;
 
 	private float fallDistance = 0;
@@ -167,24 +171,45 @@ public class Player extends GameObject {
 		posY = tileY * GameManager.TS + offY;
 
 		// Shooting
-		if (gc.getInput().isKeyDown(KeyEvent.VK_UP)) {
-			gm.addObject(new Bullet(tileX, tileY, offX + width / 2, offY + height / 2, 0));
+		if (gc.getInput().isKeyDown(KeyEvent.VK_SPACE)) {
+			gm.addObject(new Bullet(tileX, tileY, offX + width / 2, offY + height / 2, direction));
 		}
-		if (gc.getInput().isKeyDown(KeyEvent.VK_RIGHT)) {
-			gm.addObject(new Bullet(tileX, tileY, offX + width / 2, offY + height / 2, 1));
+
+		if (gc.getInput().isKey(KeyEvent.VK_D)) {
+			direction = 0;
+			if(ground){
+			anim+=dt*15;
+			if(anim>=4){
+				anim=1;
+			}
 		}
-		if (gc.getInput().isKeyDown(KeyEvent.VK_DOWN)) {
-			gm.addObject(new Bullet(tileX, tileY, offX + width / 2, offY + height / 2, 2));
+
+		} else if (gc.getInput().isKey(KeyEvent.VK_A)) {
+			direction = 1;
+
+			if(ground){
+
+				anim+=dt*15;
+				if(anim>=4){
+					anim=1;
+				}
+			}
+		} else {
+			anim = 1;
+
 		}
-		if (gc.getInput().isKeyDown(KeyEvent.VK_LEFT)) {
-			gm.addObject(new Bullet(tileX, tileY, offX + width / 2, offY + height / 2, 3));
+
+		if(gc.getInput().isKey(KeyEvent.VK_W) || !ground){
+			anim=0;
 		}
 
 	}
 
 	@Override
 	public void render(GameContainer gc, Renderer r) {
-		r.drawFillRect((int) posX, (int) posY, width, height, 0xfffaff00);
+		// r.drawFillRect((int) posX, (int) posY, width, height, 0xfffaff00);
+		// r.drawFillRect((int) posX, (int) posY, width, height, 0xfffaff00);
+		r.drawImageTile(playerImage, (int) posX, (int) posY, (int)anim, direction);
 		light = new Light(100, 0xffffff00);
 		r.drawLight(light, (int) posX + 8, (int) posY + 8);
 	}

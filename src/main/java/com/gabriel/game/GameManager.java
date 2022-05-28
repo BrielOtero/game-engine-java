@@ -14,11 +14,9 @@ import com.gabriel.engine.gfx.Light;
 
 public class GameManager extends AbstractGame {
 
-	public static final int TS = 16;
+	public static final int TS = 32;
 
-	private Image levelImage = new Image("/res/img/lev.png");
-	private Image skyImage = new Image("/res/img/sky.png");
-	private Image image = new Image("/res/img/test/test.png");
+	private Image levelTexture = new Image("/res/img/levelMapTexture.png");
 	private Light light;
 
 	private ArrayList<GameObject> objects = new ArrayList<GameObject>();
@@ -28,18 +26,22 @@ public class GameManager extends AbstractGame {
 	private int levelW;
 	private int levelH;
 
-	private SoundClip backSong = new SoundClip("/res/audio/test.wav");
+	private SoundClip backSong = new SoundClip("/res/audio/music.wav");
+
+	public int getLevelW() {
+		return levelW;
+	}
+
+	public int getLevelH() {
+		return levelH;
+	}
 
 	public GameManager() {
-		objects.add(new Player(3, 4));
+		objects.add(new Player(15, 0));
 		loadLevel("/res/img/levelMap.png");
 		camera = new Camera("player");
-		image.setAlpha(true);
 		light = new Light(200, 0xffffc72a);
-
-		image.setLightBlock(Light.FULL);
-		levelImage.setLightBlock(Light.NONE);
-		// skyImage.setLightBlock(Light.FULL);
+		levelTexture.setLightBlock(Light.NONE);
 	}
 
 	@Override
@@ -75,10 +77,8 @@ public class GameManager extends AbstractGame {
 		
 		// r.setzDepth(0);
 		camera.render(r);
-		// r.drawImage(image, gc.getInput().getMouseX()-50,
-		// gc.getInput().getMouseY()-20);
-		r.drawImage(skyImage, 0, 0);
-		r.drawImage(levelImage, 0, 0);
+		 r.drawImage(levelTexture, 0, 0);
+		 
 
 		// for (int y = 0; y < levelH; y++) {
 
@@ -169,9 +169,9 @@ public class GameManager extends AbstractGame {
 	public static void main(String[] args) {
 
 		GameContainer gc = new GameContainer(new GameManager());
-		gc.setWidth(320);
-		gc.setHeight(240);
-		gc.setScale(3f);
+		gc.setWidth(900);
+		gc.setHeight(400);
+		gc.setScale(2f);
 		gc.start();
 	}
 

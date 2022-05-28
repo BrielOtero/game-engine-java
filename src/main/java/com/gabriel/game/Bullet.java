@@ -13,7 +13,7 @@ public class Bullet extends GameObject {
 	private float offY;
 
 	private int direction;
-	private float speed = 200;
+	private float speed = 300;
 	private Light lightFire;
 
 	public Bullet(int tileX, int tileY, float offX, float offY, int direction) {
@@ -33,16 +33,10 @@ public class Bullet extends GameObject {
 
 		switch (direction) {
 			case 0:
-				offY -= speed * dt;
-				break;
+			offX += speed * dt;
+			break;
 			case 1:
-				offX += speed * dt;
-				break;
-			case 2:
-				offY += speed * dt;
-				break;
-			case 3:
-				offX -= speed * dt;
+			offX -= speed * dt;
 				break;
 		}
 
@@ -86,7 +80,7 @@ public class Bullet extends GameObject {
 	public void render(GameContainer gc, Renderer r) {
 
 		lightFire = new Light(20, 0xffff0000);
-		r.drawFillRect((int) posX - 2, (int) posY - 2, 4, 1, 0xffff0000);
+		r.drawFillRect((int) posX - 2, (int) posY - 2, 7, 7, 0xffff0000);
 		r.drawLight(lightFire, (int) posX - 2, (int) posY - 2);
 	}
 
