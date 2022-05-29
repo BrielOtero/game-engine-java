@@ -176,7 +176,7 @@ public class Player extends GameObject {
 		}
 
 		if (gc.getInput().isKey(KeyEvent.VK_D)) {
-			direction = 0;
+			direction = 0; 
 			if(ground){
 			anim+=dt*15;
 			if(anim>=4){
