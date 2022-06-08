@@ -202,6 +202,7 @@ public class Player extends GameObject {
 		if(gc.getInput().isKey(KeyEvent.VK_W) || !ground){
 			anim=0;
 		}
+		System.err.println(tileY);
 
 	}
 

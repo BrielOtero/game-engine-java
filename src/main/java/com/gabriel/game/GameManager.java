@@ -17,6 +17,7 @@ public class GameManager extends AbstractGame {
 	public static final int TS = 32;
 
 	private Image levelTexture = new Image("/res/img/levelMapTexture.png");
+	private Image interTexture = new Image("/res/img/inter.png");
 	private Light light;
 
 	private ArrayList<GameObject> objects = new ArrayList<GameObject>();
@@ -42,6 +43,7 @@ public class GameManager extends AbstractGame {
 		camera = new Camera("player");
 		light = new Light(200, 0xffffc72a);
 		levelTexture.setLightBlock(Light.NONE);
+		interTexture.setLightBlock(Light.NONE);
 	}
 
 	@Override
@@ -74,30 +76,36 @@ public class GameManager extends AbstractGame {
 	@Override
 	public void render(GameContainer gc, Renderer r) {
 		// r.drawText(String.format("%s", gc.getFps()), 0, 0, 0xff00ffff);
-		
+
 		// r.setzDepth(0);
 		camera.render(r);
-		 r.drawImage(levelTexture, 0, 0);
-		 
+		r.drawImage(levelTexture, 0, 0);
 
-		// for (int y = 0; y < levelH; y++) {
+		 for (int y = 0; y < levelH; y++) {
 
-		// 	for (int x = 0; x < levelW; x++) {
+		 for (int x = 0; x < levelW; x++) {
 
-		// 		if (collision[x + y * levelW]) {
 
-		// 			r.drawFillRect(x * TS, y * TS, TS, TS, 0xff0f0f0f);
+			if(y<=9){
 
-		// 		} else {
-		// 			r.drawFillRect(x * TS, y * TS, TS, TS, 0xfff9f9f9);
+				if (collision[x + y * levelW]) {
+					
+					r.drawImage(interTexture, x*TS,y*TS);
+					// r.drawFillRect(x * TS, y * TS, TS, TS, 0xff0f0f0f);
+					
+				} else {
+					
+					// r.drawFillRect(x * TS, y * TS, TS, TS, 0xfff9f9f9);
+					
+				}
+			}
+		}
+		}
 
-		// 		}
-		// 	}
-		// }
-		
-		//if ((int) objects.get(0).posX > 200) {
-			if (gc.getInput().isKey(KeyEvent.VK_B)) {
-	
+		// if ((int) objects.get(0).posX > 200) {
+
+		if (gc.getInput().isKey(KeyEvent.VK_B)) {
+
 			gc.getRenderer().setAmbientColor(0xff6b6b6b);
 		}
 		if (gc.getInput().isKey(KeyEvent.VK_N)) {

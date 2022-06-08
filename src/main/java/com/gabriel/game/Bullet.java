@@ -14,6 +14,8 @@ public class Bullet extends GameObject {
 
 	private int direction;
 	private float speed = 300;
+	private boolean up = false;
+	private int dChange = 0;
 	private Light lightFire;
 
 	public Bullet(int tileX, int tileY, float offX, float offY, int direction) {
@@ -33,10 +35,19 @@ public class Bullet extends GameObject {
 
 		switch (direction) {
 			case 0:
-			offX += speed * dt;
-			break;
+
+
+				offX += speed * dt;
+
+				if (up) {
+					offY -= speed * dt;
+					dChange++;
+				} else {
+					offY += speed * dt;
+				}
+				break;
 			case 1:
-			offX -= speed * dt;
+				offX -= speed * dt;
 				break;
 		}
 
@@ -68,7 +79,13 @@ public class Bullet extends GameObject {
 
 		if (gm.getCollision(tileX, tileY)) {
 
-			this.dead = true;
+			// this.dead = true;
+			up = true;
+			dChange=0;
+		}
+		if (dChange > 4 && up) {
+			dChange = 0;
+			up = up ? false : true;
 		}
 
 		posX = tileX * GameManager.TS + offX;
