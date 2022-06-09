@@ -211,7 +211,7 @@ public class Player extends GameObject {
 		// r.drawFillRect((int) posX, (int) posY, width, height, 0xfffaff00);
 		// r.drawFillRect((int) posX, (int) posY, width, height, 0xfffaff00);
 		r.drawImageTile(playerImage, (int) posX, (int) posY, (int)anim, direction);
-		light = new Light(100, 0xffffff00);
+		light = new Light(400, 0xffffff00);
 		r.drawLight(light, (int) posX + 8, (int) posY + 8);
 	}
 

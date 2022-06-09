@@ -43,7 +43,7 @@ public class GameManager extends AbstractGame {
 		camera = new Camera("player");
 		light = new Light(200, 0xffffc72a);
 		levelTexture.setLightBlock(Light.NONE);
-		interTexture.setLightBlock(Light.NONE);
+		interTexture.setLightBlock(Light.FULL);
 	}
 
 	@Override
@@ -81,24 +81,25 @@ public class GameManager extends AbstractGame {
 		camera.render(r);
 		r.drawImage(levelTexture, 0, 0);
 
+		r.drawImage(interTexture, gc.getInput().getMouseX(), gc.getInput().getMouseY());
+
 		// for (int y = 0; y < levelH; y++) {
 
-		// for (int x = 0; x < levelW; x++) {
+		// 	for (int x = 0; x < levelW; x++) {
 
-		// if(y<=9){
+		// 		if (y <= 9) {
 
-		// if (collision[x + y * levelW]) {
+		// 			if (collision[x + y * levelW]) {
 
-		// r.drawImage(interTexture, x*TS,y*TS);
-		// // r.drawFillRect(x * TS, y * TS, TS, TS, 0xff0f0f0f);
+		// 				// r.drawFillRect(x * TS, y * TS, TS, TS, 0xff0f0f0f);
 
-		// } else {
+		// 			} else {
 
-		// // r.drawFillRect(x * TS, y * TS, TS, TS, 0xfff9f9f9);
+		// 				// r.drawFillRect(x * TS, y * TS, TS, TS, 0xfff9f9f9);
 
-		// }
-		// }
-		// }
+		// 			}
+		// 		}
+		// 	}
 		// }
 
 		// if ((int) objects.get(0).posX > 200) {
@@ -148,6 +149,7 @@ public class GameManager extends AbstractGame {
 
 	public void addObject(GameObject object) {
 		objects.add(object);
+
 	}
 
 	public GameObject getObject(String tag) {
