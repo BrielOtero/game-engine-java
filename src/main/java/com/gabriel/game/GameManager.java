@@ -81,26 +81,25 @@ public class GameManager extends AbstractGame {
 		camera.render(r);
 		r.drawImage(levelTexture, 0, 0);
 
-		 for (int y = 0; y < levelH; y++) {
+		// for (int y = 0; y < levelH; y++) {
 
-		 for (int x = 0; x < levelW; x++) {
+		// for (int x = 0; x < levelW; x++) {
 
+		// if(y<=9){
 
-			if(y<=9){
+		// if (collision[x + y * levelW]) {
 
-				if (collision[x + y * levelW]) {
-					
-					r.drawImage(interTexture, x*TS,y*TS);
-					// r.drawFillRect(x * TS, y * TS, TS, TS, 0xff0f0f0f);
-					
-				} else {
-					
-					// r.drawFillRect(x * TS, y * TS, TS, TS, 0xfff9f9f9);
-					
-				}
-			}
-		}
-		}
+		// r.drawImage(interTexture, x*TS,y*TS);
+		// // r.drawFillRect(x * TS, y * TS, TS, TS, 0xff0f0f0f);
+
+		// } else {
+
+		// // r.drawFillRect(x * TS, y * TS, TS, TS, 0xfff9f9f9);
+
+		// }
+		// }
+		// }
+		// }
 
 		// if ((int) objects.get(0).posX > 200) {
 
