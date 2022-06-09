@@ -89,41 +89,6 @@ public class GameContainer implements Runnable {
 
 				game.update(this, (float) update_cap);
 
-				// #region Test
-
-				// System.err.println("Update");
-
-				// if(input.isKey(KeyEvent.VK_A)){
-				// System.err.println("A is pressed");
-				// }
-
-				// if(input.isKeyDown(KeyEvent.VK_A)){
-				// System.err.println("A is pressed Down");
-				// }
-
-				// if(input.isKeyUp(KeyEvent.VK_A)){
-				// System.err.println("A is pressed Up");
-				// }
-
-				// if(input.isButton(MouseEvent.BUTTON1)){
-				// System.err.println("Button 1 is pressed");
-				// }
-
-				// if(input.isButtonDown(MouseEvent.BUTTON1)){
-				// System.err.println("Button 1 is pressed Down");
-				// }
-
-				// if(input.isButtonUp(MouseEvent.BUTTON1)){
-				// System.err.println("Button 1 is pressed Up");
-				// }
-
-				// The scroll test alone
-				// System.err.println("The scroll is:"+input.getScroll());
-
-				// System.err.println("X: "+input.getMouseX()+"Y: "+input.getMouseY());
-
-				// #endregion
-
 				input.update();
 
 				if (frameTime >= 1.0) {
@@ -140,7 +105,12 @@ public class GameContainer implements Runnable {
 				renderer.process();
 				renderer.setCamX(0);
 				renderer.setCamY(0);
-				renderer.drawText("FPS:" + fps, 0, 0, 0xffffffff);
+				renderer.drawText("FPS:" + fps, getWidth()-60 , 0, 0xffffffff);
+				renderer.drawText("Use wasd to move", 0, 0, 0xffffffff);
+				renderer.drawText("Use B,N,M to change light", 0, 10, 0xffffffff);
+				renderer.drawText("Use space to fire", 0, 20, 0xffffffff);
+
+
 				window.update();
 				frames++;
 

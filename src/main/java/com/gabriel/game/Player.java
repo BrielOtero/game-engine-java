@@ -90,18 +90,6 @@ public class Player extends GameObject {
 
 		}
 
-		// To fix jump in the air
-
-		// if (fallDistance > 0) {
-		// if ((gm.getCollision(tileX, tileY + 1) || gm.getCollision(tileX + (int)
-		// Math.signum((int) offX), tileY + 1))
-		// && offY > 0) {
-		// fallDistance = 0;
-		// offY = 0;
-		// ground = true;
-		// } else
-		// ground = false;
-		// }
 
 		// #endregion End of Left and Right
 
@@ -129,7 +117,6 @@ public class Player extends GameObject {
 
 		if (fallDistance > 0) {
 
-			// System.err.println(gm.getCollision(tileX, tileY + 1));
 
 			if ((gm.getCollision(tileX, tileY + 1) || gm.getCollision(tileX + (int) Math.signum((int) offX), tileY + 1))
 					&& offY > 0) {
@@ -208,11 +195,9 @@ public class Player extends GameObject {
 
 	@Override
 	public void render(GameContainer gc, Renderer r) {
-		// r.drawFillRect((int) posX, (int) posY, width, height, 0xfffaff00);
-		// r.drawFillRect((int) posX, (int) posY, width, height, 0xfffaff00);
 		r.drawImageTile(playerImage, (int) posX, (int) posY, (int)anim, direction);
 		light = new Light(400, 0xffffff00);
-		r.drawLight(light, (int) posX + 8, (int) posY + 8);
+		r.drawLight(light, (int) posX + 12, (int) posY + 12);
 	}
 
 }
