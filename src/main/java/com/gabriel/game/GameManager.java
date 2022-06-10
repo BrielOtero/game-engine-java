@@ -98,12 +98,12 @@ public class GameManager extends AbstractGame {
 			}
 		}
 
-		if (gc.getInput().isKey(KeyEvent.VK_B)) {
 
+		if (gc.getInput().isKey(KeyEvent.VK_B)) {
 			gc.getRenderer().setAmbientColor(0xffb4b4b4);
 		}
 		if (gc.getInput().isKey(KeyEvent.VK_N)) {
-			gc.getRenderer().setAmbientColor(0xff000000);
+			gc.getRenderer().setAmbientColor(0xffff0000);
 		}
 
 		if (gc.getInput().isKey(KeyEvent.VK_M)) {

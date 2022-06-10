@@ -90,7 +90,6 @@ public class Player extends GameObject {
 
 		}
 
-
 		// #endregion End of Left and Right
 
 		// #region Jump and Gravity
@@ -116,7 +115,6 @@ public class Player extends GameObject {
 		}
 
 		if (fallDistance > 0) {
-
 
 			if ((gm.getCollision(tileX, tileY + 1) || gm.getCollision(tileX + (int) Math.signum((int) offX), tileY + 1))
 					&& offY > 0) {
@@ -163,22 +161,22 @@ public class Player extends GameObject {
 		}
 
 		if (gc.getInput().isKey(KeyEvent.VK_D)) {
-			direction = 0; 
-			if(ground){
-			anim+=dt*15;
-			if(anim>=4){
-				anim=1;
+			direction = 0;
+			if (ground) {
+				anim += dt * 15;
+				if (anim >= 4) {
+					anim = 1;
+				}
 			}
-		}
 
 		} else if (gc.getInput().isKey(KeyEvent.VK_A)) {
 			direction = 1;
 
-			if(ground){
+			if (ground) {
 
-				anim+=dt*15;
-				if(anim>=4){
-					anim=1;
+				anim += dt * 15;
+				if (anim >= 4) {
+					anim = 1;
 				}
 			}
 		} else {
@@ -186,18 +184,23 @@ public class Player extends GameObject {
 
 		}
 
-		if(gc.getInput().isKey(KeyEvent.VK_W) || !ground){
-			anim=0;
+		if (gc.getInput().isKey(KeyEvent.VK_W) || !ground) {
+			anim = 0;
 		}
-		System.err.println(tileY);
+		// System.err.println(tileY);
 
 	}
 
 	@Override
 	public void render(GameContainer gc, Renderer r) {
-		r.drawImageTile(playerImage, (int) posX, (int) posY, (int)anim, direction);
-		light = new Light(400, 0xffffff00);
-		r.drawLight(light, (int) posX + 12, (int) posY + 12);
+		r.drawImageTile(playerImage, (int) posX, (int) posY, (int) anim, direction);
+
+		
+			light = new Light(400, 0xffffffff);
+			r.drawLight(light, (int) posX + 12, (int) posY + 12);
+
+		
+		
 	}
 
 }
